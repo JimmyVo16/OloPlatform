@@ -1,0 +1,8 @@
+/.idea
+/.vs
+
+ReservationPlatform.API/bin/*
+ReservationPlatform.API/obj/*
+
+ReservationPlatform.Tests/bin/*
+ReservationPlatform.Tests/obj/*

@@ -1,8 +1,9 @@
-﻿using ReservationPlatform.API.Services;
-using WebApplication1.Models;
-using WebApplication1.Repositories;
+﻿using System.Threading.Tasks;
+using ReservationPlatform.API.Services;
+using OloPlatform.Models;
+using OloPlatform.Repositories;
 
-namespace WebApplication1.Services
+namespace OloPlatform.Services
 {
     public class ReservationsService:  IReservationsService
     {
@@ -13,9 +14,9 @@ namespace WebApplication1.Services
             _reservationsRepository = reservationsRepository;
         }
         
-        public ReservationResponse CreateReservation(ReservationRequestDto requestDto)
+        public async Task<ReservationResponseDto> CreateReservation(ReservationRequestDto requestDto)
         {
-            return _reservationsRepository.CreateReservation(requestDto);
+            return await _reservationsRepository.CreateReservation(requestDto);
         }
     }
 }

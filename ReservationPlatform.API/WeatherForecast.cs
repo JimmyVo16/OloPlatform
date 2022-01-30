@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApplication1
+namespace OloPlatform
 { public class WeatherForecast
     {
         public DateTime Date { get; set; }

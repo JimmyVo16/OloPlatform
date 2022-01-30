@@ -1,9 +1,10 @@
-﻿using WebApplication1.Models;
+﻿using System.Threading.Tasks;
+using OloPlatform.Models;
 
 namespace ReservationPlatform.API.Services
 {
     public interface IReservationsService
     {
-        public ReservationResponse CreateReservation(ReservationRequestDto requestDto);
+        public Task<ReservationResponseDto> CreateReservation(ReservationRequestDto requestDto);
     }
 }

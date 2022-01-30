@@ -1,47 +1,53 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Http;
-using WebApplication1.Models;
+using OloPlatform.Models;
 using System;
 using System.Data.SqlClient;
 using System.Text;
+using System.Threading.Tasks;
+using System.Transactions;
 
-namespace WebApplication1.Repositories
+namespace OloPlatform.Repositories
 {
     public class ReservationsRepository : IReservationsRepository
     {
-        public ReservationResponse CreateReservation(ReservationRequestDto requestDto)
+        private readonly IRepositoryUtilities _repositoryUtilities;
+
+        public ReservationsRepository(IRepositoryUtilities repositoryUtilities)
         {
-            // Jimmy make sure you make this cleaner
-            var builder = new SqlConnectionStringBuilder();
+            _repositoryUtilities = repositoryUtilities;
+        }
 
-            builder.DataSource = "localhost";
-            builder.InitialCatalog = "SPGDB";
-            builder.IntegratedSecurity = true;
-            var test = string.Empty;
-            using (var connection = new SqlConnection(builder.ConnectionString))
+        public async Task<ReservationResponseDto> CreateReservation(ReservationRequestDto requestDto)
+        {
+            // Jimmy make sure to clean this out
+            // Jimmy vo potentially move this up to the service level
+            using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                connection.Open();       
+                
+                // Restaurant doesn't exist
+                // Timeslot doesn't exist
+                // Reservation is not available
+                // 
+                
+                var findCommand = "SELECT top 1 name FROM sys.databases";
+             
+                // Check if it's available. return 404 if it isn't 
+                
+                var test = await _repositoryUtilities.QueryAsync<string>(findCommand);
 
-                var sql = "SELECT name, collation_name FROM sys.databases";
+                // update if it is. 
+                
+                
+                // return wehter it was successful or not
+                scope.Complete();
 
-                using (var command = new SqlCommand(sql, connection))
+                return new ReservationResponseDto()
                 {
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            test = $"{reader.GetString(0)} {reader.GetString(1)}";
-                            break;
-                        }
-                    }
-                }                    
+                    StatusCodes = HttpStatusCode.Accepted,
+                    Result = test,
+                };
             }
-            
-            return new ReservationResponse()
-            {
-                StatusCodes = HttpStatusCode.Accepted,
-                Result = test,
-            };
         }
     }
 }

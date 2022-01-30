@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using ReservationPlatform.API.Services;
-using WebApplication1.Models;
-using WebApplication1.Services;
+using OloPlatform.Models;
+using OloPlatform.Services;
 
-namespace WebApplication1.Controllers
+namespace OloPlatform.Controllers
 {
     [ApiController]
-    [Route("v1/Reservations")]
+    [Route("reservations")]
     public class ReservationsController
     {
         private readonly IReservationsService _reservationsService;
@@ -18,10 +19,10 @@ namespace WebApplication1.Controllers
 
 
         [HttpPost]
-        public ActionResult<ReservationResponse> Post([FromBody] ReservationRequestDto requestDto)
+        public async Task<ReservationResponseDto> Post([FromBody] ReservationRequestDto requestDto)
         {
             // Jimmy: Validating requestDto and return appropirate messages.
-            var response = _reservationsService.CreateReservation(requestDto);
+            var response = await _reservationsService.CreateReservation(requestDto);
             // Jimmy; Validating response and return appropirate messages.
             // aka 404 and so on.
             return response;

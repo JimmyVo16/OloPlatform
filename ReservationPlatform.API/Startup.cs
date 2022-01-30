@@ -11,10 +11,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ReservationPlatform.API.Services;
-using WebApplication1.Repositories;
-using WebApplication1.Services;
+using OloPlatform.Repositories;
+using OloPlatform.Services;
 
-namespace WebApplication1
+namespace OloPlatform
 {
     public class Startup
     {
@@ -28,9 +28,13 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Jimmy: Explain this to interviewers
             services.AddSingleton<IReservationsRepository, ReservationsRepository>();
             services.AddSingleton<IReservationsService, ReservationsService>();
-
+            services.AddSingleton<IRepositoryUtilities, RepositoryUtilities>();
+            services.AddSingleton<IInventoryRepository, InventoryRepository>();
+            services.AddSingleton<IInventoryService, InventoryService>();
+            
             services.AddControllers();
         }
 

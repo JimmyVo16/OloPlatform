@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApplication1.Models
+namespace OloPlatform.Models
 {
     public class ReservationRequestDto
     {

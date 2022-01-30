@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Transactions;
 using OloPlatform.Models;
 using OloPlatform.Repositories;
 
 namespace OloPlatform.Services
 {
-    public class InventoryService: IInventoryService
+    public class InventoryService : IInventoryService
     {
         private readonly IInventoryRepository _inventoryRepository;
 
@@ -13,18 +14,29 @@ namespace OloPlatform.Services
         {
             _inventoryRepository = inventoryRepository;
         }
-        
-        public InventoryResponseDto CreateInventory(InventoryRequestDto requestDto)
-        {
 
+        public async Task<InventoryResponseDto> CreateInventory(InventoryRequestDto requestDto)
+        {
             var results = new List<int>();
-            
-            using (TransactionScope scope = new TransactionScope())
+
+            using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                
+                foreach (var timeSlot in requestDto.TimeSlots)
+                {
+                    for (int i = 0; i < timeSlot.ReservationCount; i++)
+                    {
+                        //Jimmy: case reservation already exist. 
+                        // case: the customer created 3 at first then another 5.
+                        await _inventoryRepository.CreateReservationTimeSlot(requestDto);
+                    }
+                    
+
+                }
+
+                scope.Complete();
             }
 
-            return _inventoryRepository.CreateInventory(requestDto);
+            return await _inventoryRepository.CreateReservationTimeSlot(requestDto);
         }
     }
 }

@@ -1,12 +1,14 @@
-﻿using OloPlatform.Models;
+﻿using System.Threading.Tasks;
+using OloPlatform.Models;
 
 namespace OloPlatform.Repositories
 {
     public class InventoryRepository : IInventoryRepository
     {
-        public InventoryResponseDto CreateInventory(InventoryRequestDto requestDto)
+        public Task<ReservationTimeSlotDto> CreateReservationTimeSlot(InventoryRequestDto requestDto)
         {
-            throw new System.NotImplementedException();
+            // throw new System.NotImplementedException();
+            return null;
         }
     }
 }

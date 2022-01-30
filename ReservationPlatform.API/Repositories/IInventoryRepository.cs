@@ -1,9 +1,10 @@
-﻿using OloPlatform.Models;
+﻿using System.Threading.Tasks;
+using OloPlatform.Models;
 
 namespace OloPlatform.Repositories
 {
     public interface IInventoryRepository
     {
-        public InventoryResponseDto CreateInventory(InventoryRequestDto requestDto);
+        public Task<ReservationTimeSlotDto> CreateReservationTimeSlot(InventoryRequestDto requestDto);
     }
 }

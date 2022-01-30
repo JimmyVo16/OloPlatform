@@ -1,9 +1,10 @@
-﻿using OloPlatform.Models;
+﻿using System.Threading.Tasks;
+using OloPlatform.Models;
 
 namespace OloPlatform.Services
 {
     public interface IInventoryService
     {
-        public InventoryResponseDto CreateInventory(InventoryRequestDto requestDto);
+        public Task<InventoryResponseDto> CreateInventory(InventoryRequestDto requestDto);
     }
 }

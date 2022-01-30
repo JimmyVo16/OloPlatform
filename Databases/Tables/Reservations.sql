@@ -1,6 +1,5 @@
 Create Table Reservations(
 	ReservationId int IDENTITY(1,1),
-	TimeslotId int NOT NULL,
 	PartySize int NOT NULL, 
 	CustomerId int NULL,
 	RestaurantId int NOT NULL,

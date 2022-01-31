@@ -5,7 +5,7 @@ namespace OloPlatform.Models
 {
     public class InventoryRequestDto
     {
-        public string RestaurantId { get; set; }
+        public int RestaurantId { get; set; }
         public IEnumerable<TimeSlotRequestDto> TimeSlots { get; set; }
     }
 }

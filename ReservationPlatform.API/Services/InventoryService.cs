@@ -19,7 +19,7 @@ namespace OloPlatform.Services
 
         public async Task<InventoryResponseDto> CreateInventory(InventoryRequestDto requestDto)
         {
-            var createdReservationIds = new List<string>();
+            var createdReservationIds = new List<int>();
 
             using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {

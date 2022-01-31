@@ -5,6 +5,11 @@ namespace OloPlatform.Repositories
 {
     public interface IReservationsRepository
     {
-        public Task<ReservationResponseDto> CreateReservation(ReservationRequestDto requestDto);
+        public Task<ReservationResponseDto> BookReservation(
+            ReservationRequestDto requestDto, 
+            int customerId,
+            int timeSlotSection);
+        
+        public Task<int> GetCustomerId(ReservationRequestDto requestDto);
     }
 }

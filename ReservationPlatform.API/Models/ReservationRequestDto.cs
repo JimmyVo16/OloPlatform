@@ -5,6 +5,7 @@ namespace OloPlatform.Models
     public class ReservationRequestDto
     {
         public string CustomerName { get; set; }
+        public int RestaurantId { get; set; }
         public string EmailAddress { get; set; }
         public int PartySize { get; set; }
         // Jimmy verify the input with Olo
@@ -12,6 +13,7 @@ namespace OloPlatform.Models
         // Also the restaurant Id.
         // Q: Ask if you're designing this for just one resutatnar or multiple. 
         // most likey it's for multiple
-        public DateTime Date { get; set; }
+        public DateTime CustomerRequestedTime { get; set; }
+        
     }
 }

@@ -22,7 +22,7 @@ namespace OloPlatform.Controllers
         public async Task<ReservationResponseDto> Post([FromBody] ReservationRequestDto requestDto)
         {
             // Jimmy: Validating requestDto and return appropirate messages.
-            var response = await _reservationsService.CreateReservation(requestDto);
+            var response = await _reservationsService.BookReservation(requestDto);
             // Jimmy; Validating response and return appropirate messages.
             // aka 404 and so on.
             return response;

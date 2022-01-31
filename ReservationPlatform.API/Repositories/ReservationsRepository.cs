@@ -18,36 +18,57 @@ namespace OloPlatform.Repositories
             _repositoryUtilities = repositoryUtilities;
         }
 
-        public async Task<ReservationResponseDto> CreateReservation(ReservationRequestDto requestDto)
+        public async Task<ReservationResponseDto> BookReservation(
+            ReservationRequestDto requestDto, 
+            int customerId,
+            int timeSlotSection)
         {
             // Jimmy make sure to clean this out
             // Jimmy vo potentially move this up to the service level
-            using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+
+            const string Query = @"update TOP (1) res
+                                   SET res.CustomerId = @CustomerId
+                                   FROM Reservations res
+                                   WHERE res.RestaurantId = @RestaurantId
+	                                   AND res.CustomerId IS NULL
+	                                   AND res.PartySize = @PartySize
+	                                   AND res.TimeSlotSection = @TimeSlotSection
+                                   SELECT  @@ROWCOUNT";
+
+            // Check if it's available. return 404 if it isn't 
+
+            var input = new
             {
-                
-                // Restaurant doesn't exist
-                // Timeslot doesn't exist
-                // Reservation is not available
-                // 
-                
-                var findCommand = "SELECT top 1 name FROM sys.databases";
-             
-                // Check if it's available. return 404 if it isn't 
-                
-                var test = await _repositoryUtilities.QueryAsync<string>(findCommand);
+                CustomerId = customerId,
+                RestaurantId = requestDto.RestaurantId,
+                PartySize = requestDto.PartySize,
+                TimeSlotSection = timeSlotSection
+            };
+            
+            var result = await _repositoryUtilities.QueryAsync<bool>(Query, input);
 
-                // update if it is. 
-                
-                
-                // return wehter it was successful or not
-                scope.Complete();
+            // update if it is. 
 
-                return new ReservationResponseDto()
-                {
-                    StatusCodes = HttpStatusCode.Accepted,
-                    Result = test,
-                };
-            }
+
+            // return wehter it was successful or not
+
+
+            return new ReservationResponseDto()
+            {
+                StatusCodes = HttpStatusCode.Accepted,
+                Result = result.ToString(),
+            };
+        }
+
+        public async Task<int> GetCustomerId(ReservationRequestDto requestDto)
+        {
+            const string Query = @"SELECT c.CustomerId 
+                                   FROM Customers c
+                                   WHERE c.CustomerName = @CustomerName
+                                       AND c.EmailAddress = @EmailAddress";
+
+            return await _repositoryUtilities.QueryAsync<int>(Query,
+                new {CustomerName = requestDto.CustomerName, EmailAddress = requestDto.EmailAddress});
         }
     }
 }

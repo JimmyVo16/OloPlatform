@@ -2,6 +2,6 @@
 {
     public class CreatedReservationDto
     {
-        public string ReservationId { get; set; }
+        public int ReservationId { get; set; }
     }
 }

@@ -5,6 +5,6 @@ namespace ReservationPlatform.API.Services
 {
     public interface IReservationsService
     {
-        public Task<ReservationResponseDto> CreateReservation(ReservationRequestDto requestDto);
+        public Task<ReservationResponseDto> BookReservation(ReservationRequestDto requestDto);
     }
 }

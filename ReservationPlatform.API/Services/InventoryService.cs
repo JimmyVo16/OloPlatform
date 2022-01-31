@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using System.Transactions;
 using OloPlatform.Models;
@@ -17,7 +19,7 @@ namespace OloPlatform.Services
 
         public async Task<InventoryResponseDto> CreateInventory(InventoryRequestDto requestDto)
         {
-            var results = new List<int>();
+            var createdReservationIds = new List<string>();
 
             using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -25,18 +27,27 @@ namespace OloPlatform.Services
                 {
                     for (int i = 0; i < timeSlot.ReservationCount; i++)
                     {
-                        //Jimmy: case reservation already exist. 
-                        // case: the customer created 3 at first then another 5.
-                        await _inventoryRepository.CreateReservationTimeSlot(requestDto);
+                        var request = new CreatedReservationRequestDto
+                        {
+                            RestaurantId = requestDto.RestaurantId,
+                            TimeSlotSection = timeSlot.TimeSlotSection,
+                            PartySize = timeSlot.PartySize
+                        };
+
+                        var result = await _inventoryRepository.CreateReservationTimeSlot(request);
+                   
+                        createdReservationIds.Add(result.ReservationId);
                     }
-                    
-
                 }
-
+                
                 scope.Complete();
             }
 
-            return await _inventoryRepository.CreateReservationTimeSlot(requestDto);
+            return new InventoryResponseDto
+            {
+                StatusCodes = HttpStatusCode.OK,
+                CreatedReservationIds =  createdReservationIds
+            };
         }
     }
 }

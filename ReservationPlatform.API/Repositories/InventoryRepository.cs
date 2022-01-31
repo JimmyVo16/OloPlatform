@@ -5,10 +5,27 @@ namespace OloPlatform.Repositories
 {
     public class InventoryRepository : IInventoryRepository
     {
-        public Task<ReservationTimeSlotDto> CreateReservationTimeSlot(InventoryRequestDto requestDto)
+        private readonly IRepositoryUtilities _repositoryUtilities;
+        
+        private const string CreateReservationQuery = 
+          @"DECLARE @MyTableVar TABLE
+            (
+                ReservationId int
+            )
+            INSERT INTO Reservations(PartySize, CustomerId, RestaurantId, TimeSlotSection)
+            OUTPUT INSERTED.ReservationId INTO @MyTableVar  
+            VALUES(@PartySize, NULL, @RestaurantId, @TimeSlotSection)
+
+            Select ReservationId from @MyTableVar";
+        
+        public InventoryRepository(IRepositoryUtilities repositoryUtilities)
         {
-            // throw new System.NotImplementedException();
-            return null;
+            _repositoryUtilities = repositoryUtilities;
+        }
+        
+        public async Task<CreatedReservationDto> CreateReservationTimeSlot(CreatedReservationRequestDto requestDto)
+        {
+            return await _repositoryUtilities.QueryAsync<CreatedReservationDto>(CreateReservationQuery, requestDto);
         }
     }
 }

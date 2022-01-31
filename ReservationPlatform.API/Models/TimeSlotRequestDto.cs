@@ -1,9 +1,10 @@
 ﻿namespace OloPlatform.Models
 {
-    public class TimeSlotDto
+    public class TimeSlotRequestDto
     {
         // Jimmy: Explain to interviewers why it's a string 
-        public string TimeSlot { get; set; }
+        public int TimeSlotSection { get; set; }
         public int ReservationCount { get; set; }
+        public int PartySize { get; set; }
     }
 }

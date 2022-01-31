@@ -6,5 +6,6 @@
         public string RestaurantId { get; set; }
         public string ReservationId { get; set; }
         public string CustomerId { get; set; }
+        public int PartySize { get; set; }
     }
 }

@@ -6,7 +6,6 @@ namespace OloPlatform.Models
 {
     public class InventoryResponseDto
     {
-        public HttpStatusCode StatusCodes { get; set; }
         public IEnumerable<int> CreatedReservationIds { get; set; }
     }
 }

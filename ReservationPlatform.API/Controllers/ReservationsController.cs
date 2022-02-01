@@ -8,7 +8,7 @@ namespace OloPlatform.Controllers
 {
     [ApiController]
     [Route("reservations")]
-    public class ReservationsController
+    public class ReservationsController : ControllerBase
     {
         private readonly IReservationsService _reservationsService;
 
@@ -17,15 +17,22 @@ namespace OloPlatform.Controllers
             _reservationsService = reservationsService;
         }
 
-
-        [HttpPost]
-        public async Task<ReservationResponseDto> Post([FromBody] ReservationRequestDto requestDto)
+        // Jimmy check if this is PUT or PATCH
+        [HttpPatch]
+        public async Task<ActionResult<ReservationResponseDto>> Post([FromBody] ReservationRequestDto requestDto)
         {
             // Jimmy: Validating requestDto and return appropirate messages.
             var response = await _reservationsService.BookReservation(requestDto);
             // Jimmy; Validating response and return appropirate messages.
+            
+            
+            if (response.IsSuccess)
+            {
+                return this.Ok(response);
+            }
+            
             // aka 404 and so on.
-            return response;
+            return this.Problem("Sorry we're unable book your reservation", null, 500);
         }
     }
 }

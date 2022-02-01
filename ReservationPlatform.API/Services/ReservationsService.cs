@@ -22,11 +22,9 @@ namespace OloPlatform.Services
             return 121;
         }
 
-        public async Task<ReservationResponseDto> BookReservation(ReservationRequestDto requestDto)
+        public async Task<BookReservationDto> BookReservation(ReservationRequestDto requestDto)
         {
-            // Jimmy make sure to clean this out
-            // Jimmy vo potentially move this up to the service level
-            using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var customerId = await _reservationsRepository.GetCustomerId(requestDto);
                 

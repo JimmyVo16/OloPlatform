@@ -18,25 +18,25 @@ namespace OloPlatform.Repositories
             _repositoryUtilities = repositoryUtilities;
         }
 
-        public async Task<ReservationResponseDto> BookReservation(
-            ReservationRequestDto requestDto, 
+        public async Task<BookReservationDto> BookReservation(ReservationRequestDto requestDto,
             int customerId,
             int timeSlotSection)
         {
-            // Jimmy make sure to clean this out
-            // Jimmy vo potentially move this up to the service level
-
-            const string Query = @"update TOP (1) res
-                                   SET res.CustomerId = @CustomerId
-                                   FROM Reservations res
-                                   WHERE res.RestaurantId = @RestaurantId
-	                                   AND res.CustomerId IS NULL
-	                                   AND res.PartySize = @PartySize
-	                                   AND res.TimeSlotSection = @TimeSlotSection
-                                   SELECT  @@ROWCOUNT";
-
-            // Check if it's available. return 404 if it isn't 
-
+            const string query = 
+                @" DECLARE @ReservationId INT
+                   UPDATE 
+                       TOP (1) res
+                   SET 
+                       res.CustomerId = @CustomerId,
+                       @ReservationId = res.ReservationId
+                   FROM 
+                       Reservations res
+                   WHERE res.RestaurantId = @RestaurantId
+	                   AND res.CustomerId IS NULL
+	                   AND res.PartySize = @PartySize
+	                   AND res.TimeSlotSection = @TimeSlotSection
+                   SELECT  @@ROWCOUNT IsSuccess,  @ReservationId ReservationId";
+            
             var input = new
             {
                 CustomerId = customerId,
@@ -45,29 +45,17 @@ namespace OloPlatform.Repositories
                 TimeSlotSection = timeSlotSection
             };
             
-            var result = await _repositoryUtilities.QueryAsync<bool>(Query, input);
-
-            // update if it is. 
-
-
-            // return wehter it was successful or not
-
-
-            return new ReservationResponseDto()
-            {
-                StatusCodes = HttpStatusCode.Accepted,
-                Result = result.ToString(),
-            };
+            return await _repositoryUtilities.QuerySingleAsync<BookReservationDto>(query, input);
         }
 
         public async Task<int> GetCustomerId(ReservationRequestDto requestDto)
         {
-            const string Query = @"SELECT c.CustomerId 
+            const string query = @"SELECT c.CustomerId 
                                    FROM Customers c
                                    WHERE c.CustomerName = @CustomerName
                                        AND c.EmailAddress = @EmailAddress";
 
-            return await _repositoryUtilities.QueryAsync<int>(Query,
+            return await _repositoryUtilities.QuerySingleAsync<int>(query,
                 new {CustomerName = requestDto.CustomerName, EmailAddress = requestDto.EmailAddress});
         }
     }

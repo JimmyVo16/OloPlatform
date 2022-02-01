@@ -5,6 +5,6 @@ namespace OloPlatform.Repositories
 {
     public interface IInventoryRepository
     {
-        public Task<CreatedReservationDto> CreateReservationTimeSlot(CreatedReservationRequestDto requestDto);
+        public Task<CreatedReservationDto> CreateReservation(CreatedReservationRequestDto requestDto);
     }
 }

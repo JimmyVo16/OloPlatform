@@ -17,7 +17,7 @@ namespace OloPlatform.Services
             _inventoryRepository = inventoryRepository;
         }
 
-        public async Task<InventoryResponseDto> CreateInventory(InventoryRequestDto requestDto)
+        public async Task<IEnumerable<int>> CreateReservations(InventoryRequestDto requestDto)
         {
             var createdReservationIds = new List<int>();
 
@@ -34,20 +34,14 @@ namespace OloPlatform.Services
                             PartySize = timeSlot.PartySize
                         };
 
-                        var result = await _inventoryRepository.CreateReservationTimeSlot(request);
+                        var result = await _inventoryRepository.CreateReservation(request);
                    
                         createdReservationIds.Add(result.ReservationId);
                     }
                 }
-                
                 scope.Complete();
             }
-
-            return new InventoryResponseDto
-            {
-                StatusCodes = HttpStatusCode.OK,
-                CreatedReservationIds =  createdReservationIds
-            };
+            return createdReservationIds;
         }
     }
 }

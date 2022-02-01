@@ -12,7 +12,7 @@ namespace OloPlatform.Repositories
         private  string connectionString = "Data Source=localhost;Initial Catalog=Olo;Integrated Security=True";
         
         //Jimmy look into the object
-        public async Task<T> QueryAsync<T>(string command, object @params = null)
+        public async Task<T> QuerySingleAsync<T>(string command, object @params = null)
         {
             using (var connection = new SqlConnection(connectionString))
             {

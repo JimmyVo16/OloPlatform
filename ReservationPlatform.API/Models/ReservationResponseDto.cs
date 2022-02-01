@@ -5,8 +5,7 @@ namespace OloPlatform.Models
 {
     public class ReservationResponseDto
     {
-        public HttpStatusCode StatusCodes { get; set; }
-
+        
         // Jimmy
         public string Result { get; set; }
     }

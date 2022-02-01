@@ -23,9 +23,9 @@ namespace OloPlatform.Repositories
             _repositoryUtilities = repositoryUtilities;
         }
         
-        public async Task<CreatedReservationDto> CreateReservationTimeSlot(CreatedReservationRequestDto requestDto)
+        public async Task<CreatedReservationDto> CreateReservation(CreatedReservationRequestDto requestDto)
         {
-            return await _repositoryUtilities.QueryAsync<CreatedReservationDto>(CreateReservationQuery, requestDto);
+            return await _repositoryUtilities.QuerySingleAsync<CreatedReservationDto>(CreateReservationQuery, requestDto);
         }
     }
 }

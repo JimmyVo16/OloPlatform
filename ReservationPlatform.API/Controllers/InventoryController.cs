@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OloPlatform.Controllers.Utilities;
@@ -18,27 +19,43 @@ namespace OloPlatform.Controllers
             _inventoryService = inventoryService;
         }
         
-        [HttpPost]
-        public async Task<ActionResult<InventoryResponseDto>> Post([FromBody] InventoryRequestDto requestDto)
+        private bool IsValid(InventoryRequestDto requestDto, out ActionResult result)
         {
             if (!requestDto.TimeSlots.Any(i => RequestValidator.IsTimeSlotValid(i.TimeSlotSection)))
             {
-                return UnprocessableEntity("One or more desired time slots are invalid");
+                result = UnprocessableEntity("One or more desired time slots are invalid");
+                return false;
+            }
+
+            if (requestDto.TimeSlots.Any(i => i.ReservedDate < DateTime.Today))
+            {
+                result = UnprocessableEntity("One or more desired reserved date are past due");
+                return false;
             }
             
-            var createdReservationIds = await _inventoryService.CreateReservations(requestDto);
+            result = null;
+            return true;
+        }   
+        
+        [HttpPost]
+        public async Task<ActionResult<InventoryResponseDto>> Post([FromBody] InventoryRequestDto requestDto)
+        {
+            if (IsValid(requestDto, out var error))
+            {
+                return error;
+            }
             
-            var reservationIds = createdReservationIds as int[] ?? createdReservationIds.ToArray();
+            var createdReservations = (await _inventoryService.CreateReservations(requestDto)).ToArray();
             
-            if (reservationIds.Any())
+            if (createdReservations.Any())
             {
                 return Ok(new InventoryResponseDto
                 {
-                    CreatedReservationIds = reservationIds
+                    CreatedReservations = createdReservations.Select(i => i.ReservationId)
                 });
             }
             
-            return this.Problem("Sorry we're unable to create your reservations", null, 500);
+            return this.Problem("Sorry we're unable to create your reservations", null, 409);
         }
     }
 }

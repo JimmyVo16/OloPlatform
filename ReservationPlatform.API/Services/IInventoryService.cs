@@ -6,6 +6,6 @@ namespace OloPlatform.Services
 {
     public interface IInventoryService
     {
-        public Task<IEnumerable<int>> CreateReservations(InventoryRequestDto requestDto);
+        public Task<IEnumerable<CreatedReservationDto>> CreateReservations(InventoryRequestDto requestDto);
     }
 }

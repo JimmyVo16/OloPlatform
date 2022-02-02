@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using NSubstitute;
 using NUnit.Framework;
 using OloPlatform.Enums;
@@ -48,7 +47,14 @@ namespace ReservationPlatform.Tests.Services.ReservationsServiceTests
 
             //Assert
             result.GetHashCode().ShouldBe(expectedBookedReservation.GetHashCode());
-            //Jimmy maybe assert that the input is correct?
+
+            await repo.Received(1)
+                .GetCustomerId(Arg.Is<ReservationRequestDto>(i => i.GetHashCode() == request.GetHashCode()));
+
+            await repo.Received(1)
+                .BookReservation(
+                    Arg.Is<ReservationRequestDto>(i => i.GetHashCode() == request.GetHashCode()),
+                    Arg.Is<int>(i => i == expectedCustomerId));
         }
     }
 }

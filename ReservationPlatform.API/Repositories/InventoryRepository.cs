@@ -16,7 +16,7 @@ namespace OloPlatform.Repositories
             OUTPUT INSERTED.ReservationId INTO @MyTableVar  
             VALUES(@PartySize, NULL, @RestaurantId, @TimeSlotSection)
 
-            Select ReservationId from @MyTableVar";
+            Select 1 IsSuccess, ReservationId from @MyTableVar";
         
         public InventoryRepository(IRepositoryUtilities repositoryUtilities)
         {

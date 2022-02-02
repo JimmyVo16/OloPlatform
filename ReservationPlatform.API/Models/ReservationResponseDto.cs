@@ -1,7 +1,4 @@
-﻿using System.Net;
-using Microsoft.AspNetCore.Http;
-
-namespace OloPlatform.Models
+﻿namespace OloPlatform.Models
 {
     public class ReservationResponseDto
     {

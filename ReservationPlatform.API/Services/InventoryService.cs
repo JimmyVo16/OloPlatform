@@ -9,21 +9,23 @@ namespace OloPlatform.Services
     public class InventoryService : IInventoryService
     {
         private readonly IInventoryRepository _inventoryRepository;
+        private readonly ILogger _logger;
 
-        public InventoryService(IInventoryRepository inventoryRepository)
+        public InventoryService(IInventoryRepository inventoryRepository, ILogger logger)
         {
             _inventoryRepository = inventoryRepository;
+            _logger = logger;
         }
 
-        public async Task<IEnumerable<int>> CreateReservations(InventoryRequestDto requestDto)
+        public async Task<IEnumerable<CreatedReservationDto>> CreateReservations(InventoryRequestDto requestDto)
         {
-            var createdReservationIds = new List<int>();
+            var createdReservationIds = new List<CreatedReservationDto>();
 
             using (TransactionScope scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 foreach (var timeSlot in requestDto.TimeSlots)
                 {
-                    for (int i = 0; i < timeSlot.ReservationCount; i++)
+                    for (var i = 0; i < timeSlot.ReservationCount; i++)
                     {
                         var request = new CreatedReservationRequestDto
                         {
@@ -33,8 +35,16 @@ namespace OloPlatform.Services
                         };
 
                         var result = await _inventoryRepository.CreateReservation(request);
-                   
-                        createdReservationIds.Add(result.ReservationId);
+
+                        if (result.IsSuccess)
+                        {
+                            createdReservationIds.Add(result);
+                        }
+                        else
+                        {
+                            _logger.LogWarning("Create reservation for request.", request);
+                        }
+                        //TODO: Handle errors gratefully.
                     }
                 }
                 scope.Complete();

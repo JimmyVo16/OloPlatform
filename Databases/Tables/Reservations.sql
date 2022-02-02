@@ -8,3 +8,6 @@ Create Table dbo.Reservations(
 	CONSTRAINT FK_Reservations_Restaurants FOREIGN KEY (RestaurantId) REFERENCES Restaurants(RestaurantId),
 	CONSTRAINT FK_Reservations_Customers FOREIGN KEY (CustomerId) REFERENCES Customers(CustomerId)
 );
+
+CREATE NONCLUSTERED INDEX IX_Reservations_RestaurantId_PartySize_
+   ON dbo.Reservations (RestaurantId, TimeSlotSection, PartySize) INCLUDE (CustomerId);

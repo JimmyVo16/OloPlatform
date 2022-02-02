@@ -37,11 +37,11 @@ namespace ReservationPlatform.Tests.Services.InventoryServiceTests
                 
                 TimeSlots = new []
                 {
-                    new TimeSlotRequestDto()
+                    new ReservationTimeSlotRequestDto()
                     {
                         ReservationCount = 3,
                     },
-                    new TimeSlotRequestDto()
+                    new ReservationTimeSlotRequestDto()
                     {
                         ReservationCount = 2,
                         
@@ -93,11 +93,11 @@ namespace ReservationPlatform.Tests.Services.InventoryServiceTests
                 
                 TimeSlots = new []
                 {
-                    new TimeSlotRequestDto()
+                    new ReservationTimeSlotRequestDto()
                     {
                         ReservationCount = 3,
                     },
-                    new TimeSlotRequestDto()
+                    new ReservationTimeSlotRequestDto()
                     {
                         ReservationCount = 2,
                         

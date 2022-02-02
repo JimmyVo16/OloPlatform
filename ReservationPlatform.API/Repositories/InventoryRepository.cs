@@ -12,9 +12,9 @@ namespace OloPlatform.Repositories
             (
                 ReservationId int
             )
-            INSERT INTO Reservations(PartySize, CustomerId, RestaurantId, TimeSlotSection)
+            INSERT INTO Reservations(PartySize, CustomerId, RestaurantId, TimeSlotSection, ReservedDate)
             OUTPUT INSERTED.ReservationId INTO @MyTableVar  
-            VALUES(@PartySize, NULL, @RestaurantId, @TimeSlotSection)
+            VALUES(@PartySize, NULL, @RestaurantId, @TimeSlotSection, @ReservedDate)
 
             Select 1 IsSuccess, ReservationId from @MyTableVar";
         

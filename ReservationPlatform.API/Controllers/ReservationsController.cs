@@ -39,7 +39,7 @@ namespace OloPlatform.Controllers
         [HttpPatch]
         public async Task<ActionResult<ReservationResponseDto>> Post([FromBody] ReservationRequestDto requestDto)
         {
-            if (IsValid(requestDto, out var error))
+            if (!IsValid(requestDto, out var error))
             {
                 return error;
             }
@@ -54,7 +54,7 @@ namespace OloPlatform.Controllers
                 });
             }
 
-            return Problem("Sorry we're unable book your reservation", null, 500);
+            return UnprocessableEntity("Sorry we're unable book your reservation");
         }
     }
 }

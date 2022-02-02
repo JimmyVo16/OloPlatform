@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Transactions;
+using OloPlatform.Mappers;
 using OloPlatform.Models;
 using OloPlatform.Repositories;
 
@@ -27,12 +28,9 @@ namespace OloPlatform.Services
                 {
                     for (var i = 0; i < timeSlot.ReservationCount; i++)
                     {
-                        var request = new CreatedReservationRequestDto
-                        {
-                            RestaurantId = requestDto.RestaurantId,
-                            TimeSlotSection = timeSlot.TimeSlotSection,
-                            PartySize = timeSlot.PartySize
-                        };
+
+                        var request = timeSlot.ToCreatedReservationRequestDto();
+                        request.RestaurantId = requestDto.RestaurantId;
 
                         var result = await _inventoryRepository.CreateReservation(request);
 

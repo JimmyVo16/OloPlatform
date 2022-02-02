@@ -3,7 +3,7 @@ using OloPlatform.Enums;
 
 namespace OloPlatform.Models
 {
-    public class TimeSlotRequestDto
+    public class ReservationTimeSlotRequestDto
     {
         public TimeSlotEnums TimeSlotSection { get; set; }
         public int ReservationCount { get; set; }

@@ -40,7 +40,7 @@ namespace OloPlatform.Controllers
         [HttpPost]
         public async Task<ActionResult<InventoryResponseDto>> Post([FromBody] InventoryRequestDto requestDto)
         {
-            if (IsValid(requestDto, out var error))
+            if (!IsValid(requestDto, out var error))
             {
                 return error;
             }
@@ -51,7 +51,7 @@ namespace OloPlatform.Controllers
             {
                 return Ok(new InventoryResponseDto
                 {
-                    CreatedReservations = createdReservations.Select(i => i.ReservationId)
+                    CreatedReservationIds = createdReservations.Select(i => i.ReservationId)
                 });
             }
             

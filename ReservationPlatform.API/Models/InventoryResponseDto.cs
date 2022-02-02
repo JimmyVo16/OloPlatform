@@ -4,6 +4,6 @@ namespace OloPlatform.Models
 {
     public class InventoryResponseDto
     {
-        public IEnumerable<int> CreatedReservations { get; set; }
+        public IEnumerable<int> CreatedReservationIds { get; set; }
     }
 }

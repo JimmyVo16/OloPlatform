@@ -29,14 +29,16 @@ namespace OloPlatform.Repositories
 	                   AND res.CustomerId IS NULL
 	                   AND res.PartySize = @PartySize
 	                   AND res.TimeSlotSection = @TimeSlotSection
+	                   AND res.ReservedDate = @ReservedDate
                    SELECT  @@ROWCOUNT IsSuccess,  @ReservationId ReservationId";
             
             var input = new
             {
                 CustomerId = customerId,
-                RestaurantId = requestDto.RestaurantId,
-                PartySize = requestDto.PartySize,
-                TimeSlotSection = requestDto.CustomerRequestedTimeSlot
+                requestDto.RestaurantId,
+                requestDto.PartySize,
+                TimeSlotSection = requestDto.CustomerRequestedTimeSlot,
+                requestDto.ReservedDate
             };
             
             return await _repositoryUtilities.QuerySingleOrDefaultAsync<BookReservationDto>(query, input);

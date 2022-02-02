@@ -25,7 +25,9 @@ namespace OloPlatform.Repositories
         
         public async Task<CreatedReservationDto> CreateReservation(CreatedReservationRequestDto requestDto)
         {
-            return await _repositoryUtilities.QuerySingleAsync<CreatedReservationDto>(CreateReservationQuery, requestDto);
+            return await _repositoryUtilities.QuerySingleOrDefaultAsync<CreatedReservationDto>(
+                CreateReservationQuery, 
+                requestDto);
         }
     }
 }

@@ -1,4 +1,4 @@
-Create Table Reservations(
+Create Table dbo.Reservations(
 	ReservationId int IDENTITY(1,1),
 	PartySize int NOT NULL, 
 	CustomerId int NULL,

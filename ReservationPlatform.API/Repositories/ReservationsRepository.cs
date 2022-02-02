@@ -18,9 +18,9 @@ namespace OloPlatform.Repositories
             _repositoryUtilities = repositoryUtilities;
         }
 
-        public async Task<BookReservationDto> BookReservation(ReservationRequestDto requestDto,
-            int customerId,
-            int timeSlotSection)
+        public async Task<BookReservationDto> BookReservation(
+            ReservationRequestDto requestDto,
+            int customerId)
         {
             const string query = 
                 @" DECLARE @ReservationId INT
@@ -42,10 +42,10 @@ namespace OloPlatform.Repositories
                 CustomerId = customerId,
                 RestaurantId = requestDto.RestaurantId,
                 PartySize = requestDto.PartySize,
-                TimeSlotSection = timeSlotSection
+                TimeSlotSection = requestDto.CustomerRequestedTimeSlot
             };
             
-            return await _repositoryUtilities.QuerySingleAsync<BookReservationDto>(query, input);
+            return await _repositoryUtilities.QuerySingleOrDefaultAsync<BookReservationDto>(query, input);
         }
 
         public async Task<int> GetCustomerId(ReservationRequestDto requestDto)
@@ -55,7 +55,7 @@ namespace OloPlatform.Repositories
                                    WHERE c.CustomerName = @CustomerName
                                        AND c.EmailAddress = @EmailAddress";
 
-            return await _repositoryUtilities.QuerySingleAsync<int>(query,
+            return await _repositoryUtilities.QuerySingleOrDefaultAsync<int>(query,
                 new {CustomerName = requestDto.CustomerName, EmailAddress = requestDto.EmailAddress});
         }
     }

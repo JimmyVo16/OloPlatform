@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OloPlatform.Controllers.Utilities;
 using OloPlatform.Models;
 using OloPlatform.Services;
 
@@ -20,6 +21,11 @@ namespace OloPlatform.Controllers
         [HttpPost]
         public async Task<ActionResult<InventoryResponseDto>> Post([FromBody] InventoryRequestDto requestDto)
         {
+            if (!requestDto.TimeSlots.Any(i => RequestValidator.IsTimeSlotValid(i.TimeSlotSection)))
+            {
+                return UnprocessableEntity("One or more desired time slots are invalid");
+            }
+            
             var createdReservationIds = await _inventoryService.CreateReservations(requestDto);
             
             var reservationIds = createdReservationIds as int[] ?? createdReservationIds.ToArray();

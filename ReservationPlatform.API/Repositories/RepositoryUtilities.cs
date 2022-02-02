@@ -1,20 +1,26 @@
-﻿using System.Data.SqlClient;
+﻿using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Dapper;
+using Microsoft.Extensions.Configuration;
 
 namespace OloPlatform.Repositories
 {
     public class RepositoryUtilities : IRepositoryUtilities
     {
-        // Jimmy clean this up
-        private  string connectionString = "Data Source=localhost;Initial Catalog=Olo;Integrated Security=True";
+        private readonly string _connectionString;
         
-        //Jimmy look into the object
-        public async Task<T> QuerySingleAsync<T>(string command, object @params = null)
+        public RepositoryUtilities(IConfiguration configuration)
         {
-            using (var connection = new SqlConnection(connectionString))
+            _connectionString = configuration["DefaultConnection:ConnectionString"]; 
+        }
+        
+
+        public async Task<T> QuerySingleOrDefaultAsync<T>(string command, object @params = null)
+        {
+            using (var connection = new SqlConnection(_connectionString))
             {
                 var result = await connection.QueryAsync<T>(command, @params);
                 

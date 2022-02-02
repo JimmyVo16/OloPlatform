@@ -1,4 +1,5 @@
 ﻿using System;
+using OloPlatform.Enums;
 
 namespace OloPlatform.Models
 {
@@ -8,12 +9,7 @@ namespace OloPlatform.Models
         public int RestaurantId { get; set; }
         public string EmailAddress { get; set; }
         public int PartySize { get; set; }
-        // Jimmy verify the input with Olo
-        // For the date and time
-        // Also the restaurant Id.
-        // Q: Ask if you're designing this for just one resutatnar or multiple. 
-        // most likey it's for multiple
-        public DateTime CustomerRequestedTime { get; set; }
+        public TimeSlotEnums CustomerRequestedTimeSlot { get; set; }
         
     }
 }

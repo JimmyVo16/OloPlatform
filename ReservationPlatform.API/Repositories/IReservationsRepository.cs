@@ -7,8 +7,7 @@ namespace OloPlatform.Repositories
     {
         public Task<BookReservationDto> BookReservation(
             ReservationRequestDto requestDto, 
-            int customerId,
-            int timeSlotSection);
+            int customerId);
         
         public Task<int> GetCustomerId(ReservationRequestDto requestDto);
     }

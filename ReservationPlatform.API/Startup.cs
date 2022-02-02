@@ -28,7 +28,6 @@ namespace OloPlatform
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Jimmy: Explain this to interviewers
             services.AddSingleton<IReservationsRepository, ReservationsRepository>();
             services.AddSingleton<IReservationsService, ReservationsService>();
             services.AddSingleton<IRepositoryUtilities, RepositoryUtilities>();

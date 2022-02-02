@@ -5,8 +5,6 @@ namespace OloPlatform.Models
 {
     public class ReservationResponseDto
     {
-        
-        // Jimmy
-        public string Result { get; set; }
+        public int BookedReservationId { get; set; }
     }
 }

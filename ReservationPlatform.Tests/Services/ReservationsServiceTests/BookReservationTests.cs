@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using NSubstitute;
 using NUnit.Framework;
+using OloPlatform.Enums;
 using OloPlatform.Models;
 using OloPlatform.Repositories;
 using OloPlatform.Services;
@@ -24,28 +25,27 @@ namespace ReservationPlatform.Tests.Services.ReservationsServiceTests
                 IsSuccess = true
             };
             const int expectedCustomerId = 12;
-            
+
             repo.GetCustomerId(
                     Arg.Any<ReservationRequestDto>())
                 .Returns(expectedCustomerId);
-            
+
             repo.BookReservation(
                     Arg.Any<ReservationRequestDto>(),
-                    Arg.Any<int>(),
                     Arg.Any<int>())
                 .Returns(expectedBookedReservation);
-            
-            
+
+
             var request = new ReservationRequestDto
             {
-                CustomerRequestedTime = DateTime.Now
+                CustomerRequestedTimeSlot = TimeSlotEnums.Hour2TimeSlot1
             };
 
             var reservationsService = new ReservationsService(repo);
-            
+
             //Act
             var result = await reservationsService.BookReservation(request);
-            
+
             //Assert
             result.GetHashCode().ShouldBe(expectedBookedReservation.GetHashCode());
             //Jimmy maybe assert that the input is correct?

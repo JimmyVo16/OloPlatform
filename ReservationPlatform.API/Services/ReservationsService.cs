@@ -15,13 +15,7 @@ namespace OloPlatform.Services
         {
             _reservationsRepository = reservationsRepository;
         }
-
-        internal int MapDateTimeTotTimeSlotSection(DateTime customerRequestedTime)
-        {
-            //jimmy
-            return 121;
-        }
-
+        
         public async Task<BookReservationDto> BookReservation(ReservationRequestDto requestDto)
         {
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -30,8 +24,7 @@ namespace OloPlatform.Services
                 
                 var result = await _reservationsRepository.BookReservation(
                     requestDto, 
-                    customerId, 
-                    MapDateTimeTotTimeSlotSection(requestDto.CustomerRequestedTime));
+                    customerId);
                 
                 scope.Complete();
                 return result;

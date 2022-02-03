@@ -2,7 +2,6 @@
 {
     public enum TimeSlotEnums
     {
-        Invalid = 0,
         Hour1TimeSlot1 = 11,
         Hour1TimeSlot2 = 12,
         Hour1TimeSlot3 = 13,

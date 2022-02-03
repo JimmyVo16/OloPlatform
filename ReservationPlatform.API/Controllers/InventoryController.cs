@@ -19,28 +19,10 @@ namespace OloPlatform.Controllers
             _inventoryService = inventoryService;
         }
         
-        private bool IsValid(InventoryRequestDto requestDto, out ActionResult result)
-        {
-            if (!requestDto.TimeSlots.Any(i => RequestValidator.IsTimeSlotValid(i.TimeSlotSection)))
-            {
-                result = UnprocessableEntity("One or more desired time slots are invalid");
-                return false;
-            }
-
-            if (requestDto.TimeSlots.Any(i => i.ReservedDate < DateTime.Today))
-            {
-                result = UnprocessableEntity("One or more desired reserved date are past due");
-                return false;
-            }
-            
-            result = null;
-            return true;
-        }   
-        
         [HttpPost]
         public async Task<ActionResult<InventoryResponseDto>> Post([FromBody] InventoryRequestDto requestDto)
         {
-            if (!IsValid(requestDto, out var error))
+            if (!RequestValidator.IsInventoryRequestValid(requestDto, out var error))
             {
                 return error;
             }
@@ -57,5 +39,6 @@ namespace OloPlatform.Controllers
             
             return this.Problem("Sorry we're unable to create your reservations", null, 409);
         }
+
     }
 }

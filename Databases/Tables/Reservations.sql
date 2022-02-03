@@ -10,5 +10,5 @@ Create Table dbo.Reservations(
 	CONSTRAINT FK_Reservations_Customers FOREIGN KEY (CustomerId) REFERENCES Customers(CustomerId)
 );
 
-CREATE NONCLUSTERED INDEX IX_Reservations_RestaurantId_PartySize_
-   ON dbo.Reservations (RestaurantId, TimeSlotSection, PartySize) INCLUDE (CustomerId);
+CREATE NONCLUSTERED INDEX IX_Reservations_RestaurantId_PartySize_ReservedDate
+   ON dbo.Reservations (RestaurantId, TimeSlotSection, PartySize, ReservedDate) INCLUDE (CustomerId);

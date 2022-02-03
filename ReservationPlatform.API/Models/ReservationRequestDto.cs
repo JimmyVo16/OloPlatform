@@ -9,7 +9,6 @@ namespace OloPlatform.Models
         public int RestaurantId { get; set; }
         public string EmailAddress { get; set; }
         public int PartySize { get; set; }
-        
         public DateTime ReservedDate { get; set; }
         public TimeSlotEnums CustomerRequestedTimeSlot { get; set; }
         

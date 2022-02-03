@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OloPlatform.Controllers.Utilities;
@@ -17,29 +18,12 @@ namespace OloPlatform.Controllers
         {
             _reservationsService = reservationsService;
         }
-        
-        private bool IsValid(ReservationRequestDto requestDto, out ActionResult result)
-        {
-            if (!RequestValidator.IsTimeSlotValid(requestDto.CustomerRequestedTimeSlot))
-            {
-                result = UnprocessableEntity("Sorry your time slot was invalid");
-                return false;
-            }
-
-            if (requestDto.ReservedDate < DateTime.Today)
-            {
-                result = UnprocessableEntity("Sorry the reserved date is past due");
-                return false;
-            }
-            
-            result = null;
-            return true;
-        }   
+   
 
         [HttpPatch]
         public async Task<ActionResult<ReservationResponseDto>> Post([FromBody] ReservationRequestDto requestDto)
         {
-            if (!IsValid(requestDto, out var error))
+            if (!RequestValidator.IsReservationRequestValid(requestDto, out var error))
             {
                 return error;
             }

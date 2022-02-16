@@ -8,5 +8,10 @@ namespace OloPlatform.Services
         {
             Console.WriteLine(message, data);
         }
+        
+        public void LogError(string message, Exception e, object data = null)
+        {
+            Console.WriteLine(message, e, data);
+        }
     }
 }

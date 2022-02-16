@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
@@ -19,18 +20,51 @@ namespace OloPlatform.Repositories
             _logger = logger;
         }
         
-        public async Task<T> QuerySingleOrDefaultAsync<T>(string command, object @params = null)
+        public async Task<T> QuerySingleOrDefaultAsync<T>(string command, object @params = null) where T: class, new()
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
-                var result = await connection.QueryAsync<T>(command, @params);
-
-                if (!result.Any())
+                try
                 {
-                    _logger.LogWarning($"No result were found for command {command}", @params);
-                }
+                    var result = await connection.QueryAsync<T>(command, @params);
 
-                return result.SingleOrDefault();
+                    if (result.Any())
+                    {
+                        return result.Single();
+                    }
+                    _logger.LogWarning($"No result were found for command {command}", @params);
+                    
+                    return new T(); 
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError($"Exception what thrown for command: {command}", e,  @params);
+                    return new T();    
+                }
+            }
+        }
+
+        public async Task<T> QuerySinglePrimitiveAsync<T>(string command, object @params = null) where T : struct
+        {
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                try
+                {
+                    var result = await connection.QueryAsync<T>(command, @params);
+
+                    if (result.Any())
+                    {
+                        return result.Single();
+                    }
+                    _logger.LogWarning($"No result were found for command {command}", @params);
+                    
+                    return default;
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError($"Exception what thrown for command: {command}", e,  @params);
+                    return default;
+                }
             }
         }
     }

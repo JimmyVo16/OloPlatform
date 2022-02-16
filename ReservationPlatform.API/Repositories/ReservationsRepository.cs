@@ -51,8 +51,8 @@ namespace OloPlatform.Repositories
                                    WHERE c.CustomerName = @CustomerName
                                        AND c.EmailAddress = @EmailAddress";
 
-            return await _repositoryUtilities.QuerySingleOrDefaultAsync<int>(query,
-                new {CustomerName = requestDto.CustomerName, EmailAddress = requestDto.EmailAddress});
+            return await _repositoryUtilities.QuerySinglePrimitiveAsync<int>(query,
+                new { requestDto.CustomerName, requestDto.EmailAddress});
         }
     }
 }
